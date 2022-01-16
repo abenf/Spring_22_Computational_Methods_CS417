@@ -6,7 +6,7 @@ def set_max_digits(value : int):
     global MAX_DIGITS
     MAX_DIGITS = value
 
-def results_header(width : int=(MAX_DIGITS + 4)) ->str:
+def results_header(width : int=(MAX_DIGITS + 4)) -> str:
     return "|{:^{w}}|{:^{w}}|\n".format('Decimal', 'Binary', w = width) + \
           ("|" + "-"*(width))*2 + '|\n'
 
