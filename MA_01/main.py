@@ -1,13 +1,12 @@
 import sys
-from .MA_01.machine_assignment_01 import *
+from dec_to_bin.d2b import *
 
-def main(argc : int, *args):
-    results : str = RESULTS_HEADER
-    for i in range(argc):
-        dec_bin : DecBinTuple = dec_to_bin(args[i])
+def main(*args):
+    results : str = results_header()
+    for arg in args[1:]:
+        dec_bin : DecBinTuple = dec_to_bin(float(arg))
         results += result_string(dec_bin)
     print(results)
 
-
 if __name__ == '__main__':
-    main(len(sys.argv), sys.argv)
+    main(*sys.argv)
