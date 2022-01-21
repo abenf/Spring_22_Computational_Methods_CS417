@@ -13,7 +13,7 @@ def set_base_int(value : int):
     BASE_INT = value
 
 def results_header(width : int=(MAX_DIGITS + 4)) -> str:
-    return f'|{"Decimal":^{width}}|{"Binary":^{width}}\n' + ("|" + "-"*(width))*2 + '|\n'
+    return f'|{"Decimal":^{width}}|{"Binary":^{width}}|\n' + ("|" + "-"*(width))*2 + '|\n'
 
 def binary_string(bin_list : list[int]) -> str:
     return ''.join(str(zeros_and_ones) for zeros_and_ones in bin_list) #convert contents of list[int] to strings and join
