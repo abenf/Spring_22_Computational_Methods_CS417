@@ -9,7 +9,7 @@ def set_max_digits(value : int): #for use with future command line flags
     global MAX_DIGITS
     MAX_DIGITS = value
 
-def set_base_int(value : int):
+def set_base_int(value : int): #for use with future command line flags
     global BASE_INT
     BASE_INT = value
 
