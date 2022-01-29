@@ -4,7 +4,7 @@ AltBaseListTuple = list[list[int], list[int]] # fractional and whole number part
 DecAltTuple = (float, AltBaseListTuple, int) # (decimal, alt base number -> [integer, fractional], sign)
 MAX_DIGITS = 8  # precision
 BASE_INT = 2    # number base
-GT_25 = False   # number base is greater than 25 (set in set_base_int)
+BASE_IS_GT_25 = False   # number base is greater than 25 (set in set_base_int)
 
 
 def convert_number_list(number_list : list[int]) -> list[str]:
@@ -14,14 +14,13 @@ def convert_number_list(number_list : list[int]) -> list[str]:
 
 def convert_gt_ten_digit(value : int):
     gt_ten_digit : str = ""
+    no_of_Zs = 0
     if value >= 26:
-        i, value = divmod(value, 26) # add Zs til value < 26
-        gt_ten_digit += i*'Z'
-    if value > 9:
-        gt_ten_digit += chr(55 + value) # add alpha representation of numbers greater than 9
-    else:
-        gt_ten_digit += str(value)
-    gt_ten_digit += ";"*GT_25
+        i, value = divmod(value, 26)
+        no_of_Zs = BASE_INT//(i*26 + 10)
+    if value >= 10:
+        value = chr(55 + value)
+    gt_ten_digit += 'Z'*no_of_Zs + str(value) + ";"*BASE_IS_GT_25
     return gt_ten_digit
 
 def set_max_digits(value : int): 
@@ -34,20 +33,23 @@ def set_max_digits(value : int):
 
 def set_base_int(value : int): 
     global BASE_INT
-    global GT_25
+    global BASE_IS_GT_25
     value = int(value)
     if value < 2:
         print("Invalid base; revert to default")
     BASE_INT = value
     if value > 25:
-        GT_25 = True
+        BASE_IS_GT_25 = True
 
 def results_header(width : int=(MAX_DIGITS + 4)) -> str:
     base_str = "Base " + str(BASE_INT)
     return f'|{"Decimal":^{width}}|{base_str:^{width}}|\n' + ("|" + "-"*(width))*2 + '|\n'
 
 def alt_base_string(alt_base_list : list[int]) -> str:
-    return ''.join(str(zeros_and_ones) for zeros_and_ones in alt_base_list) # convert contents of list[int] to strings and join
+    alt_str = ''.join(str(zeros_and_ones) for zeros_and_ones in alt_base_list)
+    if BASE_IS_GT_25:
+        alt_str = alt_str[:-1]
+    return alt_str # convert contents of list[int] to strings and join
           
 def result_string(my_decimal : float, my_alt_base_num : AltBaseListTuple, sign : int, width : int=(MAX_DIGITS + 2)) -> str:
     s : str = (sign >= 0)*' ' + (sign < 0)*'-' # add a minus sign if number is negative
@@ -117,7 +119,7 @@ def convert_fractional(buffer : float) -> list[int]:
         i += 1
     for elem in digit_i:
         if elem != 0:
-            return cut_trailing_zeros(digit_i)
+            digit_i = cut_trailing_zeros(digit_i)
     if base > 10:
         digit_i = convert_number_list(digit_i)
-    return []
+    return digit_i
