@@ -1,6 +1,32 @@
-from ipaddress import v4_int_to_packed
 import sys
 from dec_to_bin.d2b import *
+
+MSG_USAGE = '''
+
+Convert decimal numbers to alternative base (default = base 2) using selected precision (default = 8)
+
+./main.py -[options] [option_arg_base, option_arg_prec] [decimal_number_to_convert_0, decimal_number_to_convert_1...]
+
+    options:
+        b: changes base to corresponding integer value >= 2
+        p: changes display precision to corresponding integer value > 0, < 20
+
+        for multiflag use with example base=4, prec=9, options should be entered with arguments as follows:
+
+        ./main.py -bp 4 9 [decimal_numbers_to_convert]
+        ./main.py -pb 9 4 ["]
+'''
+MSG_BAD_FLAGS = '''
+
+One or more flags selected is invalid.
+
+Valid flags:
+    -b, -p, -bp, -pb
+'''
+MSG_MISSING_ARGS = '''
+
+One or more missing optional arguments.
+'''
 
 FLAG_LOOKUP = {'b': set_base_int, 'p': set_max_digits}
 
@@ -35,6 +61,6 @@ def main(*args):
 if __name__ == '__main__':
     args = sys.argv
     if len(args) == 1:
-        print('''TODO USAGE MESSAGE''')
+        print(MSG_USAGE)
     else: 
         main(*args)
