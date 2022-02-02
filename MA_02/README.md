@@ -73,3 +73,9 @@ output *simliar* to
 | 17.5           | 11.8           |
 
 ```
+
+will be generated
+
+Notes:
+
+02/02/2022 - Bug:description'in dec_to_bin in d2b.py cut_trailing_zeros(my_list : list[int]) -> list[int] does not correctly handle negative integers'
