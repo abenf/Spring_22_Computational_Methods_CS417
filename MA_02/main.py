@@ -43,7 +43,7 @@ def handle_flags(flag : str, *args) -> int:
 
 def main(*args):
     i : int = 0
-    if args[1][0] == '-': # if flag is detected
+    if args[1][0] == '-' and args[1][1].isalpha(): # if flag is detected
         try:
             i = handle_flags(args[1], *args)
         except KeyError:

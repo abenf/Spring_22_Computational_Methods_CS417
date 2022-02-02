@@ -9,10 +9,9 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "args": [
                 "-bp",
-                "0.25",
                 "16",
                 "12",
                 "0.25",

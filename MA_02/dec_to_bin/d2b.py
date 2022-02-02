@@ -6,6 +6,14 @@ MAX_DIGITS = 8  # precision
 BASE_INT = 2    # number base
 BASE_IS_GT_25 = False   # number base is greater than 25 (set in set_base_int)
 
+def get_BASE_INT() -> int:
+    return BASE_INT
+
+def get_MAX_DIGITS() -> int:
+    return MAX_DIGITS
+
+def get_BASE_IS_GT_25() -> bool:
+    return BASE_IS_GT_25
 
 def convert_number_list(number_list : list[int]) -> list[str]:
     for k, digit in enumerate(number_list):
@@ -26,10 +34,10 @@ def convert_gt_ten_digit(value : int):
 def set_max_digits(value : int): 
     global MAX_DIGITS
     value = int(value)
-    if value < 1 or value > 20:
+    if value > 0 or value < 21:
+        MAX_DIGITS = value
+    else:
         print("Invalid precision; revert to default")
-        return
-    MAX_DIGITS = value
 
 def set_base_int(value : int): 
     global BASE_INT
@@ -37,21 +45,24 @@ def set_base_int(value : int):
     value = int(value)
     if value < 2:
         print("Invalid base; revert to default")
-    BASE_INT = value
-    if value > 25:
-        BASE_IS_GT_25 = True
+    else:
+        BASE_INT = value
+        if value > 25:
+            BASE_IS_GT_25 = True
 
-def results_header(width : int=(MAX_DIGITS + 4)) -> str:
+def results_header() -> str:
+    width = get_MAX_DIGITS() + 4
     base_str = "Base " + str(BASE_INT)
     return f'|{"Decimal":^{width}}|{base_str:^{width}}|\n' + ("|" + "-"*(width))*2 + '|\n'
 
 def alt_base_string(alt_base_list : list[int]) -> str:
     alt_str = ''.join(str(zeros_and_ones) for zeros_and_ones in alt_base_list)
-    if BASE_IS_GT_25:
+    if get_BASE_IS_GT_25() == True:
         alt_str = alt_str[:-1]
     return alt_str # convert contents of list[int] to strings and join
           
-def result_string(my_decimal : float, my_alt_base_num : AltBaseListTuple, sign : int, width : int=(MAX_DIGITS + 2)) -> str:
+def result_string(my_decimal : float, my_alt_base_num : AltBaseListTuple, sign : int) -> str:
+    width : int = get_MAX_DIGITS() + 2
     s : str = (sign >= 0)*' ' + (sign < 0)*'-' # add a minus sign if number is negative
     alt_base_str =  alt_base_string(my_alt_base_num[0]) 
     try: # don't print fractional if my_alt_base_num is a whole number
@@ -84,7 +95,7 @@ def dec_to_alt(my_decimal : float) -> DecAltTuple:
     return (abs(my_decimal), my_alt_base_list, sign)
 
 def convert_integer(buffer : int) -> list[int]:
-    base = BASE_INT
+    base = get_BASE_INT()
     i  : int = 0
     try:
         int_magnitude = int(log(buffer, base)) # throws ValueError if buffer == 0
@@ -108,8 +119,8 @@ def convert_integer(buffer : int) -> list[int]:
         return [buffer]
 
 def convert_fractional(buffer : float) -> list[int]:
-    base = BASE_INT
-    precision = MAX_DIGITS
+    base = get_BASE_INT()
+    precision = get_MAX_DIGITS()
     i : int = 0
     digit_i : list[int] = [0 for n in range(precision)] # precision-length list of zeros
     while buffer != 0 and i < precision:
@@ -120,6 +131,7 @@ def convert_fractional(buffer : float) -> list[int]:
     for elem in digit_i:
         if elem != 0:
             digit_i = cut_trailing_zeros(digit_i)
+            break
     if base > 10:
         digit_i = convert_number_list(digit_i)
     return digit_i
