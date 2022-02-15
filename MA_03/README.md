@@ -18,7 +18,7 @@ If run using
 ./main.py
 ```
 
-the following data or similar will be displayed alongside of a plot 'h vs. absolute error'
+the following or similar data will be displayed alongside a plot 'h vs. absolute error'
 
 ```
 
